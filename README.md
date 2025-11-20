@@ -1,2 +1,2 @@
-# Just-Dance-WII-U-Pretty-DEMO
-Just Dance WII-U Pretty
+# Just-Dance Pretty
+Just Dance Pretty
