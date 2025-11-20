@@ -3,283 +3,834 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Just Dance Pretty DEMO — Community Mod</title>
+  <title>Just Dance Pretty</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    html { scroll-behavior: smooth; }
-    body { 
-      background: url('https://i.postimg.cc/tCfd784k/istockphoto-1387666645-612x612.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+   /* ========================
+   Star Rating Dark Theme
+========================= */
+.rating-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse; /* 5 зірок справа наліво */
+  gap: 0.4rem;
+  justify-content: center;
+  --stroke: #fff;    /* білий колір обводки */
+  --fill: #ffc73a;   /* жовте заповнення */
+}
+
+.rating input {
+  display: none; /* ховаємо радіо-кнопки */
+}
+
+.rating label {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.rating label:hover {
+  transform: scale(1.2); /* ефект масштабування при наведенні */
+}
+
+.rating svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: transparent;
+  stroke: var(--stroke);
+  stroke-width: 2px;
+  stroke-linejoin: bevel;
+  stroke-dasharray: 12;
+  transition: stroke 0.2s, fill 0.3s, transform 0.2s;
+  animation: idle 4s linear infinite;
+}
+
+@keyframes idle {
+  from { stroke-dashoffset: 24; }
+}
+
+.rating label:hover svg {
+  stroke: var(--fill);
+}
+
+.rating input:checked ~ label svg {
+  animation: idle 4s linear infinite, yippee 0.75s backwards;
+  fill: var(--fill);
+  stroke: var(--fill);
+  stroke-opacity: 0;
+  stroke-dasharray: 0;
+  stroke-linejoin: miter;
+  stroke-width: 8px;
+}
+
+@keyframes yippee {
+  0% {
+    transform: scale(1);
+    fill-opacity: 0;
+    stroke-opacity: 1;
+    stroke: var(--stroke);
+    stroke-dasharray: 10;
+    stroke-width: 1px;
+    stroke-linejoin: bevel;
+  }
+  30% {
+    transform: scale(0);
+    fill-opacity: 0;
+  }
+  30.1% {
+    stroke: var(--fill);
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 8px;
+  }
+  60% {
+    transform: scale(1.2);
+    fill: var(--fill);
+  }
+}
+
+/* Підпис під рейтингом */
+.rating p {
+  color: #fff;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+   html { scroll-behavior:smooth; }
+    body {
+      background: radial-gradient(circle at top, #ff3cf7 0%, #7b2bff 40%, #080021 100%);
+      color:#fff;
+      font-family: 'Inter', sans-serif;
+      overflow-x:hidden;
     }
-    a, summary { cursor: pointer; }
-    /* Прозорі кнопки і картки */
-    .bg-white, .border { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
-    a { color: #fff !important; text-decoration: none; }
-    a:hover { color: #ff77ff !important; }
-    summary::marker { color: #fff; }
+    .neon-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(18px);
+      border-radius: 1.4rem;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .neon-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 25px rgba(255,80,255,0.5);
+    }
+    .button-neon {
+      background: linear-gradient(90deg,#ff4de1,#6d5dff);
+      padding:.6rem 1.4rem;
+      border-radius:1.4rem;
+      font-weight:700;
+      transition:.25s;
+    }
+    .button-neon:hover {
+      filter:brightness(1.15);
+      transform:scale(1.04);
+    }
+    .title-glow {
+      text-shadow:0 0 12px #ff58ff;
+    }
+	body {
+  background: url('https://pixabay.com/get/…/gradient-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+body {
+    margin: 0;
+    font-family: Montserrat, sans-serif;
+    color: white;
+    overflow-x: hidden;
+
+    /* Фон з інтернету */
+    background: url('https://pixabay.com/get/gd1e3d8e1a9f2c1e4c5f5d1f2b3e4a.jpg') no-repeat center center fixed;
+    background-size: cover;
+
+    /* Розмиття */
+    backdrop-filter: blur(15px);
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+body {
+    margin:0;
+    font-family: Montserrat,sans-serif;
+    color:white;
+    overflow-x:hidden;
+
+    /* Фон з інтернету */
+    background: url('https://pixabay.com/get/gd1e3d8e1a9f2c1e4c5f5d1f2b3e4a.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Легке розмиття фону */
+body::before {
+    content:'';
+    position: fixed;
+    inset:0;
+    background: inherit;
+    filter: blur(6px);
+    z-index: -1;
+}
+/* Картки неонового стилю */
+.neon-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.neon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #ff77ff66, 0 0 40px #ff77ff33;
+}
+
+/* Neon buttons */
+.button-neon {
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(45deg, #ff00ff, #ff77ff, #ff00ff);
+  text-decoration: none;
+  box-shadow: 0 0 10px #ff00ffaa, 0 0 20px #ff77ffaa;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-neon::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+}
+
+.button-neon:hover::after {
+  transform: rotate(45deg) translate(20px, 20px);
+}
+
+.button-neon:hover {
+  box-shadow: 0 0 20px #ff00ffaa, 0 0 40px #ff77ffaa;
+  transform: translateY(-2px);
+}
+
+/* Заголовок неоновий ефект */
+.title-glow {
+  color: #ff77ff;
+  text-shadow: 0 0 5px #ff77ff, 0 0 10px #ff00ff, 0 0 20px #ff77ff;
+}
+
+header {
+    text-align:center;
+    padding:40px 0;
+    text-shadow: 0 0 12px #ff88ff, 0 0 25px #88ffdd;
+}
+h1 { font-size:48px; margin:0; }
+
+main {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+    padding:20px;
+}
+
+.card {
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:25px;
+    padding:25px;
+    max-width:400px;
+    text-align:center;
+    box-shadow:0 0 25px #ffffff22;
+}
+
+.btn-primary, .btn-secondary {
+    padding:12px 30px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    color:white;
+    margin-top:15px;
+    transition:.25s;
+}
+
+.btn-primary {
+    background:linear-gradient(45deg,#ff5c5c,#ffee55);
+    box-shadow:0 0 15px #ff88ff88;
+}
+.btn-primary:hover { transform: scale(1.1); }
+
+.btn-secondary {
+    background:rgba(255,255,255,0.2);
+}
+.btn-secondary:hover {
+    background:rgba(255,255,255,0.35);
+    transform: scale(1.05);
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+body {
+    margin:0;
+    font-family: Montserrat,sans-serif;
+    color:white;
+    overflow-x:hidden;
+    background: url('https://pixabay.com/get/gd1e3d8e1a9f2c1e4c5f5d1f2b3e4a.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+/* Легке розмиття з анімацією */
+body::before {
+    content:'';
+    position: fixed;
+    inset:0;
+    background: inherit;
+    filter: blur(6px);
+    z-index: -1;
+    animation: pulse 20s linear infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.95; }
+}
+
+header {
+    text-align:center;
+    padding:40px 0;
+    text-shadow: 0 0 12px #ff88ff, 0 0 25px #88ffdd;
+}
+h1 { font-size:48px; margin:0; }
+
+main {
+    display:flex;
+    flex-direction: column; /* вертикально */
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:25px;
+    padding:25px;
+    max-width:400px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 0 25px #ffffff22;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.btn-primary, .btn-secondary {
+    padding:12px 30px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    color:white;
+    margin-top:15px;
+    transition:.25s;
+}
+
+.btn-primary {
+    background:linear-gradient(45deg,#ff5c5c,#ffee55);
+    box-shadow:0 0 15px #ff88ff88;
+}
+.btn-primary:hover { transform: scale(1.1); }
+
+.btn-secondary {
+    background:rgba(255,255,255,0.2);
+}
+.btn-secondary:hover {
+    background:rgba(255,255,255,0.35);
+    transform: scale(1.05);
+}
+.btn-primary, .btn-secondary {
+    padding:12px 35px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:600;
+    color:white;
+    margin-top:15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Головна кнопка — градієнт + світіння */
+.btn-primary {
+    background: linear-gradient(135deg,#ff00ff,#ffcc00);
+    box-shadow: 0 0 10px #ff00ff55, 0 0 20px #ffcc0055;
+}
+.btn-primary::after {
+    content:'';
+    position:absolute;
+    top:0; left:-50%;
+    width:200%; height:100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+    transform: skewX(-25deg);
+    transition: all 0.7s ease;
+}
+.btn-primary:hover::after {
+    left:100%;
+}
+.btn-primary:hover {
+    transform: scale(1.1);
+    box-shadow:0 0 20px #ff00ffaa,0 0 30px #ffcc00aa;
+}
+
+/* Друга кнопка — прозора з світінням */
+.btn-secondary {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow:0 0 10px rgba(255,255,255,0.2);
+}
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.35);
+    transform: scale(1.05);
+    box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+/* Додаткове розмиття через псевдо-елемент, щоб не впливати на контент */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: inherit;
+    filter: blur(20px);
+    z-index: -1;
+}
+body {
+    margin: 0;
+    font-family: Montserrat, sans-serif;
+    color: white;
+    overflow-x: hidden;
+
+    /* Фон з інтернету */
+    background: url('https://i.postimg.cc/fWCwLSmT/Just-Dance-Unlimited.webp') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Легке розмиття через псевдо-елемент */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: inherit;
+    filter: blur(6px); /* легке розмиття */
+    z-index: -1;
+}
+/* Вертикальні кнопки у картках */
+.card button {
+    display: block;       /* Кожна кнопка на новому рядку */
+    width: 100%;          /* Займає всю ширину картки */
+    margin: 10px 0;       /* Відстань між кнопками */
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding: 12px 0;
+}
+
+/* Основна кнопка — яскравий градієнт і світіння */
+.btn-primary {
+    background: linear-gradient(135deg, #ff00ff, #ffcc00);
+    color: white;
+    box-shadow: 0 0 15px #ff00ff88, 0 0 25px #ffcc0088;
+}
+.btn-primary:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 25px #ff00ffaa, 0 0 40px #ffcc00aa;
+}
+
+/* Друга кнопка — прозора з легким світінням */
+.btn-secondary {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.5);
+    color: white;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.35);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+body {
+    margin:0;
+    font-family: Montserrat, sans-serif;
+    color:white;
+    overflow-x:hidden;
+    background: url('https://i.postimg.cc/fWCwLSmT/Just-Dance-Unlimited.webp') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+/* Розмиття + пульсація фону */
+body::before {
+    content:'';
+    position: fixed;
+    inset:0;
+    background: inherit;
+    filter: blur(6px
+/* =========================
+   Neon Button
+========================= */
+.button-neon {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #111;
+  border: 2px solid #ff00ff;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #ff00ff55, 0 0 20px #ff00ff33;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-neon:hover {
+  color: #ff00ff;
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  transform: scale(1.05);
+}
+
+/* =========================
+   Neon Card
+========================= */
+.neon-card {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #ff00ff44;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 0 20px #ff00ff22;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.neon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px #ff00ff55, 0 0 50px #ff00ff33;
+}
+
+/* =========================
+   Thanks Message
+========================= */
+.thanks-msg {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.4s ease;
+  color: #0f0;
+  font-weight: bold;
+}
+
+.thanks-msg:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   Section Title Glow
+========================= */
+.title-glow {
+  color: #fff;
+  text-shadow: 0 0 5px #ff00ff66, 0 0 10px #ff00ff44, 0 0 20px #ff00ff33;
+}
+/* =========================
+   Neon Button
+========================= */
+.button-neon {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #111;
+  border: 2px solid #ff00ff;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #ff00ff55, 0 0 20px #ff00ff33;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-neon:hover {
+  color: #ff00ff;
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  transform: scale(1.05);
+}
+
+/* =========================
+   Neon Card
+========================= */
+.neon-card {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #ff00ff44;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 0 20px #ff00ff22;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.neon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px #ff00ff55, 0 0 50px #ff00ff33;
+}
+
+/* =========================
+   Thanks Message
+========================= */
+.thanks-msg {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.4s ease;
+  color: #0f0;
+  font-weight: bold;
+}
+
+.thanks-msg:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   Section Title Glow
+========================= */
+.title-glow {
+  color: #fff;
+  text-shadow: 0 0 5px #ff00ff66, 0 0 10px #ff00ff44, 0 0 20px #ff00ff33;
+}
+
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="#home" class="flex items-center gap-3 select-none">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Just_Dance_Logo_2023.jpg" alt="logo" class="w-7 h-7" />
-          <span class="font-extrabold tracking-tight text-lg">Just Dance <span class="text-pink-400">Pretty DEMO</span></span>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="#features">Features</a>
-          <a href="#platforms">Platforms</a>
-          <a href="#downloads">Download</a>
-          <a href="#install">Install Guide</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#faq">FAQ</a>
-        </nav>
-        <a href="#downloads" class="inline-flex items-center rounded-2xl px-4 py-2">Get the Mod</a>
-      </div>
+<header class="sticky top-0 backdrop-blur-xl bg-black/20 z-50 border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <h1 class="font-extrabold text-xl title-glow">Just Dance <span class="text-pink-300">Pretty</span></h1>
+    <nav class="hidden md:flex gap-6 text-sm">
+      <a href="#features" class="hover:text-pink-300">Features</a>
+      <a href="#platforms" class="hover:text-pink-300">Platforms</a>
+      <a href="#downloads" class="hover:text-pink-300">Download</a>
+      <a href="#install" class="hover:text-pink-300">Install</a>
+    </nav>
+    <a href="#downloads" class="button-neon">Get Mod</a>
+  </div>
+</header>
+
+<section class="py-14 text-center">
+  <h2 class="text-5xl font-extrabold title-glow">Welcome to Pretty Mod</h2>
+  <p class="mt-4 text-lg text-white/80">A modern neon rework of the Just Dance UI</p>
+</section>
+
+<section id="features" class="py-14 max-w-7xl mx-auto px-6">
+  <h2 class="text-3xl font-bold mb-8 title-glow">Features</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg mb-2">New Neon Style</h3>
+      <p class="text-sm text-white/80">Fully updated bright, glowing modern theme.</p>
     </div>
-  </header>
- <div class="glass rounded-3xl shadow-xl p-3">
-          <img src="https://i.postimg.cc/cJ1fzW9s/New-Project-24-F2-BD427.webp" alt="Game preview" class="rounded-2xl object-cover w-full h-[340px]" />
-        </div>
-      </div>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg mb-2">Smooth UX</h3>
+      <p class="text-sm text-white/80">Faster navigation and better layout.</p>
     </div>
-  </section>
-
-  <!-- Features Section -->
-  <section id="features" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold mb-8">Why you'll love it</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <article class="rounded-2xl shadow p-6">
-          <h3 class="font-bold text-lg">Curated Songlist</h3>
-          <p class="mt-2">Handpicked tracks with fair scoring maps and polished choreography ports.</p>
-        </article>
-        <article class="rounded-2xl shadow p-6">
-          <h3 class="font-bold text-lg">Smoother UX</h3>
-          <p class="mt-2">Songs, lots, games menu</p>
-        </article>
-        <article class="rounded-2xl shadow p-6">
-          <h3 class="font-bold text-lg">Play</h3>
-          <p class="mt-2">Play anywhere: PC, Wii U and more.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Platforms Section -->
-  <section id="platforms" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold mb-8">Supported Platforms</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl border p-6">
-          <h3 class="font-bold text-lg">Wii U</h3>
-          <ul class="mt-2 list-disc list-inside">
-            <li>Works with Cemu Emulator, Real Wii U</li>
-            <li>Discover new songs and play them</li>
-            <li>User interface by kleopy</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl border p-6">
-          <h3 class="font-bold text-lg">PC</h3>
-          <ul class="mt-2 list-disc list-inside">
-            <li>Windows 10/11</li>
-            <li>Phone Controller</li>
-            <li>Optional 60 FPS patch</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl border p-6">
-          <h3 class="font-bold text-lg">Soon</h3>
-          <ul class="mt-2 list-disc list-inside">
-            <li>It will be soon</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Downloads Section -->
-  <section id="downloads" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold mb-8">Download the Mod</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl shadow p-6 flex flex-col">
-          <div class="flex items-center justify-between">
-            <h3 class="font-bold text-lg">Wii U</h3>
-            <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-800">Stable</span>
-          </div>
-          <p class="mt-2">Cemu Emulator Or Real Wii U.</p>
-          <ul class="mt-3 text-sm list-disc list-inside">
-            <li>Size: ~2.1 GB</li>
-            <li>Version: v1.0.0</li>
-            <li>Updated: 2025-09-09</li>
-          </ul>
-          <a href="https://drive.google.com/drive/folders/17P-E6IjabX14TyvvqmOvT4vujZTOZz7v">Download</a>
-          <a href="#checksums" class="mt-2 text-xs underline">SHA-256 & checksums</a>
-        </div>
-        <div class="rounded-2xl shadow p-6 flex flex-col">
-          <div class="flex items-center justify-between">
-            <h3 class="font-bold text-lg">PC (Windows)</h3>
-            <span class="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800">Beta</span>
-          </div>
-          <p class="mt-2">Installer with optional 60 FPS patch.</p>
-          <ul class="mt-3 text-sm list-disc list-inside">
-            <li>Size: ~2.4 GB</li>
-            <li>Version: v1.0-beta</li>
-            <li>Updated: 2025-09-09</li>
-          </ul>
-          <a href="https://drive.google.com/drive/folders/1uInbaySyhvKGdJ0y1lCYFdSbAPFJ2jbk?usp=sharing" class="mt-4 inline-flex justify-center items-center rounded-xl px-4 py-2">Download</a>
-          <a href="#checksums" class="mt-2 text-xs underline">SHA-256 & checksums</a>
-        </div>
-        <div class="rounded-2xl shadow p-6 flex flex-col">
-          <div class="flex items-center justify-between">
-            <h3 class="font-bold text-lg">Soon</h3>
-            <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-800">Experimental</span>
-          </div>
-          <p class="mt-2">It will be soon</p>
-          <a href="#" class="mt-4 inline-flex justify-center items-center rounded-xl px-4 py-2">See options</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Installation Section -->
-  <section id="install" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold mb-8">Installation</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <details class="rounded-2xl border p-6">
-          <summary class="font-bold">Wii U</summary>
-          <ol class="mt-3 list-decimal list-inside text-sm">
-            <li>Download the zip folder and put it in the emulator.</li>
-            <li>Real Wii U: Add the folder to games and open Wii U to play.</li>
-          </ol>
-        </details>
-        <details class="rounded-2xl border p-6">
-          <summary class="font-bold">PC (Windows)</summary>
-          <ol class="mt-3 list-decimal list-inside text-sm">
-            <li>Unzip the folder and add it to the game's directory.</li>
-            <li>Run the installer and enjoy the game.</li>
-          </ol>
-        </details>
-        <details class="rounded-2xl border p-6">
-          <summary class="font-bold">Soon</summary>
-          <ol class="mt-3 list-decimal list-inside text-sm">
-            <li>..</li>
-          </ol>
-        </details>
-      </div>
-    </div>
-  </section>
-<!-- Галерея -->
-<section id="gallery" class="py-16" style="background: transparent;">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-4xl font-extrabold mb-10 tracking-tight text-white"> Screenshots</h2>
-
-    <div id="lightgallery" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <a href="https://i.postimg.cc/tg3SqK9K/image.jpg" data-sub-html="<h4>Menu Preview</h4>">
-        <img src="https://i.postimg.cc/tg3SqK9K/image.jpg"
-             alt="Menu preview"
-             class="rounded-xl object-cover w-full h-56 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg"/>
-      </a>
-
-      <a href="https://i.postimg.cc/FKrCT9tT/Screenshot-20250905-103733-Cemu.webp" data-sub-html="<h4>Gameplay Preview</h4>">
-        <img src="https://i.postimg.cc/FKrCT9tT/Screenshot-20250905-103733-Cemu.webp"
-             alt="Gameplay preview"
-             class="rounded-xl object-cover w-full h-56 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg"/>
-      </a>
-
-      <a href="https://i.postimg.cc/rmpSB3sC/Screenshot-20250905-145910-Cemu.webp" data-sub-html="<h4>Settings Preview</h4>">
-        <img src="https://i.postimg.cc/rmpSB3sC/Screenshot-20250905-145910-Cemu.webp"
-             alt="Settings preview"
-             class="rounded-xl object-cover w-full h-56 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg"/>
-      </a>
-
-      <a href="https://i.postimg.cc/pXBDqK2t/Screenshot-20250829-195707-Cemu.webp" data-sub-html="<h4>Gameplay Preview</h4>">
-        <img src="https://i.postimg.cc/pXBDqK2t/Screenshot-20250829-195707-Cemu.webp"
-             alt="Gameplay preview"
-             class="rounded-xl object-cover w-full h-56 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg"/>
-      </a>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg mb-2">Cross‑Platform</h3>
+      <p class="text-sm text-white/80">Wii U, PC and more coming soon.</p>
     </div>
   </div>
 </section>
 
-<!-- LightGallery CSS & JS -->
-<link href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery-bundle.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/lightgallery.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/zoom/lg-zoom.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/thumbnail/lg-thumbnail.umd.min.js"></script>
-
-<script>
-  lightGallery(document.getElementById('lightgallery'), {
-    plugins: [lgZoom, lgThumbnail],
-    speed: 500,
-    download: false,
-    fullscreen: true
-  });
-</script>
-
-
-  <!-- Checksums Section -->
-  <section id="checksums" class="py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-extrabold mb-4">Checksums</h2>
-      <pre class="mt-4 p-4 rounded-xl overflow-auto text-xs">WIIU_v1.0.0.zip  SHA-256: YOUR_HASH_HERE
-PC_v0.9.2-beta.exe SHA-256: YOUR_HASH_HERE
-SWITCH_pack.zip   SHA-256: YOUR_HASH_HERE</pre>
+<section id="platforms" class="py-14 max-w-7xl mx-auto px-6">
+  <h2 class="text-3xl font-bold mb-8 title-glow">Platforms</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">Wii U</h3>
+      <p class="text-sm mt-2 text-white/80">Works on Cemu and real hardware.</p>
     </div>
-  </section>
-
-  <!-- Changelog & FAQ Section -->
-  <section id="faq" class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
-      <div>
-        <h2 class="text-2xl font-extrabold mb-4">Changelog</h2>
-        <ul class="space-y-3 text-sm">
-          <li class="p-4 rounded-xl border">v1.0.0 — These songs and menu will be updated soon</li>
-          <li class="p-4 rounded-xl border">v1.0-beta — PC beta.</li>
-        </ul>
-      </div>
-      <div>
-        <h2 class="text-2xl font-extrabold mb-4">FAQ</h2>
-        <div class="space-y-3">
-          <details class="p-4 rounded-xl border">
-            <summary class="font-semibold">Is this mod free?</summary>
-            <p class="mt-2 text-sm">Yes, play on the whole platform for free.</p>
-          </details>
-          <details class="p-4 rounded-xl border">
-            <summary class="font-semibold">Do I need to own the game?</summary>
-            <p class="mt-2 text-sm">Yes. Support the original developers — use legally owned copies.</p>
-          </details>
-          <details class="p-4 rounded-xl border">
-            <summary class="font-semibold">PC controller</summary>
-            <p class="mt-2 text-sm">Phone controller requires the Just Dance Controller app.</p>
-          </details>
-        </div>
-      </div>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">PC</h3>
+      <p class="text-sm mt-2 text-white/80">Windows build with controller support.</p>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-10 border-t border-white/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-sm">© <span id="year"></span> Just Dance Pretty — Fan-made project. Not affiliated with Ubisoft.</p>
-        <div class="flex items-center gap-3 text-sm">
-          <a href="">Report a bug</a>
-          <a href="https://discord.gg/xBGhctSA">Discord</a>
-          <a href="https://github.com/Ihir88">GitHub</a>
-        </div>
-      </div>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">Soon</h3>
+      <p class="text-sm mt-2 text-white/80">More platforms planned.</p>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+<section id="downloads" class="py-14 max-w-7xl mx-auto px-6">
+  <h2 class="text-3xl font-bold mb-8 title-glow">Downloads</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">Wii U</h3>
+      <p class="text-sm mt-2 text-white/80">Stable release</p>
+      <a href="https://drive.google.com/drive/folders/17zqMFQ98bh8L4ANgeLpoVgINW7mFTTT_?usp=sharing" class="button-neon inline-block mt-4">Download</a>
+    </div>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">PC</h3>
+      <p class="text-sm mt-2 text-white/80">Beta build</p>
+      <a href="#" class="button-neon inline-block mt-4">SOON</a>
+    </div>
+    <div class="neon-card p-6">
+      <h3 class="font-bold text-lg">2026 Demo Wii U </h3>
+      <a href="https://drive.google.com/drive/folders/1WMMsb-4W9fp-z3W17K3hWXg61QkMWNLM?usp=sharing" class="button-neon inline-block mt-4">Downloads</a>
+    </div>
+  </div>
+</section>
+
+<section id="install" class="py-14 max-w-7xl mx-auto px-6">
+  <h2 class="text-3xl font-bold mb-8 title-glow">Installation</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <details class="neon-card p-6"><summary class="font-bold">Wii U</summary><p class="mt-2 text-sm text-white/80">Place in Cemu folder and run.</p></details>
+    <details class="neon-card p-6"><summary class="font-bold">PC</summary><p class="mt-2 text-sm text-white/80">Run installer.</p></details>
+    <details class="neon-card p-6"><summary class="font-bold">2026 Demo Wii U</summary><p class="mt-2 text-sm text-white/80">2026 Demo for Wii U</p></details>
+  </div>
+</section>
 
 </body>
 </html>
+<!-- ========================
+     Downloads Section + Rating
+========================= -->
+
+  <!-- Star Rating -->
+  <div class="rating-container">
+    <div class="rating">
+      <input type="radio" name="stars" id="star5" />
+      <label for="star5">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12,2 15,9 22,9 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9 9,9"></polygon>
+        </svg>
+      </label>
+
+      <input type="radio" name="stars" id="star4" />
+      <label for="star4">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12,2 15,9 22,9 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9 9,9"></polygon>
+        </svg>
+      </label>
+
+      <input type="radio" name="stars" id="star3" />
+      <label for="star3">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12,2 15,9 22,9 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9 9,9"></polygon>
+        </svg>
+      </label>
+
+      <input type="radio" name="stars" id="star2" />
+      <label for="star2">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12,2 15,9 22,9 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9 9,9"></polygon>
+        </svg>
+      </label>
+
+      <input type="radio" name="stars" id="star1" />
+      <label for="star1">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12,2 15,9 22,9 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9 9,9"></polygon>
+        </svg>
+      </label>
+    </div>
+    <p>Rate our mod!</p>
+  </div>
+</section>
+
+<!-- ========================
+     CSS для Star Rating
+========================= -->
+<style>
+.rating-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.4rem;
+  justify-content: center;
+  --stroke: #fff;
+  --fill: #ffc73a;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.rating label:hover {
+  transform: scale(1.2);
+}
+
+.rating svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: transparent;
+  stroke: var(--stroke);
+  stroke-width: 2px;
+  stroke-linejoin: bevel;
+  stroke-dasharray: 12;
+  transition: stroke 0.2s, fill 0.3s, transform 0.2s;
+  animation: idle 4s linear infinite;
+}
+
+@keyframes idle {
+  from { stroke-dashoffset: 24; }
+}
+
+.rating label:hover svg {
+  stroke: var(--fill);
+}
+
+.rating input:checked ~ label svg {
+  animation: idle 4s linear infinite, yippee 0.75s backwards;
+  fill: var(--fill);
+  stroke: var(--fill);
+  stroke-opacity: 0;
+  stroke-dasharray: 0;
+  stroke-linejoin: miter;
+  stroke-width: 8px;
+}
+
+@keyframes yippee {
+  0% {
+    transform:
